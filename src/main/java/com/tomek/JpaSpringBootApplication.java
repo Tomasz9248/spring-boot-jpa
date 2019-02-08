@@ -23,6 +23,21 @@ public class JpaSpringBootApplication {
         System.out.println(bookGet);
         ctx.close(); // close context
     }
-
 }
+
+/* Thats how the starting class would look like without spring boot
+It should be marked with @EnableTransactionManager and create @Bean PlatformTransactionManager
+
+@Configuration
+@EnableTransactionManagement
+public class JpaConfig {
+//...
+
+    @Bean
+    public PlatformTransactionManager createTransactionManager(EntityManagerFactory emf) {
+        JpaTransactionManager txManager = new JpaTransactionManager(emf);
+        return txManager;
+    }
+}
+*/
 

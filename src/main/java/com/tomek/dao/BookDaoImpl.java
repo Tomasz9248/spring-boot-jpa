@@ -4,30 +4,27 @@ import com.tomek.model.Book;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 
 @Repository // = @Component. Annotation @Repository is used when we implement DAO/repository template
+@Transactional // if marked with @Transactional there is no need to open/close transaction manually
+// annotation might be add to method or to class
 public class BookDaoImpl implements BookDao {
 
-    @PersistenceUnit // JPA's annotation like @Autowired injects EntityManagerFactory type object to field
-    private EntityManagerFactory emFactory;
+    @PersistenceContext  // Spring automatically creates EM with EMF based on app context
+    private EntityManager entityManager;
 
 
     public BookDaoImpl() {
     } // Constructor no longer have to call out objects
 
+
     public void save(Book book) {
-        EntityManager entityManager = emFactory.createEntityManager(); // create EntityManager obj through emFactory
-        EntityTransaction tx = entityManager.getTransaction();
-        tx.begin();
-        entityManager.persist(book);
-        tx.commit();
-        entityManager.close(); // close only Entity Manager. EntityManagerFactory is ordered by Spring itself
+       entityManager.persist(book);
     }
 
     public Book get(Long id) {
-        EntityManager entityManager = emFactory.createEntityManager(); // create EntityManager obj
-        Book book = entityManager.find(Book.class, id); // call find method on EntityManager obj to select book based on id column
-        entityManager.close(); // close only Entity Manager. EntityManagerFactory is ordered by Spring itself
+        Book book = entityManager.find(Book.class, id);
         return book;
     }
 }

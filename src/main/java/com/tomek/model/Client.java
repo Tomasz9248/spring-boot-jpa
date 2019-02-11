@@ -5,8 +5,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-/* In this example client class has access to orders data (one way)
-Relationship type is OneToMany (1:n)
+/* In this example client class has access to orders data and order_list has access to client's data
+Relationship type is OneToMany (1:n) from Client perspective and ManyToOne (n:1) from client_order perspective;
  */
 @Entity
 @Table(name = "clients")
@@ -23,11 +23,7 @@ public class Client implements Serializable {
     private String lastName;
     @Column(nullable = false)
     private String address;
-    @OneToMany
-    // @JoinColumn annotation creates new table in this owner class
-    // column name based on 'name =' and referencedColumnName is primary key field
-    // data is stored as a list; might be also set or map
-    @JoinColumn(name = "client_id", referencedColumnName="id_client")
+    @OneToMany(mappedBy = "client") // name of the reference type Client in class that is in relationship
     private List<Order> orders;
 
     Client() {}

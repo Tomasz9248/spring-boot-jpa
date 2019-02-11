@@ -1,29 +1,29 @@
 package com.tomek.model;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-// relationship is one way so there is no need to add anything extra in this class
+// relationship is two way so appropriate annotation must be added
+// client_order is owner of relationship cause has table that contains client table data
 @Entity
 @Table(name = "client_order")
 public class Order implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name="id_order")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_order")
     private Long id;
     @Column(nullable = false)
     private String product;
     @Column(name = "details", length = 512)
     private String orderDetails;
+    @ManyToOne
+    @JoinColumn(name = "client_id") // name of the column that stores foreign key to access client table
+    private Client client;
 
-    Order() {}
+    Order() {
+    }
 
     public Order(String product, String orderDetails) {
         this.product = product;
@@ -33,24 +33,42 @@ public class Order implements Serializable {
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getProduct() {
         return product;
     }
+
     public void setProduct(String product) {
         this.product = product;
     }
+
     public String getOrderDetails() {
         return orderDetails;
     }
+
     public void setOrderDetails(String orderDetails) {
         this.orderDetails = orderDetails;
     }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
     @Override
     public String toString() {
-        return "Order [id=" + id + ", product=" + product
-                + ", orderDetails=" + orderDetails + "]";
+        return "Order{" +
+                "id=" + id +
+                ", product='" + product + '\'' +
+                ", orderDetails='" + orderDetails + '\'' +
+                ", client=" + client.getFirstName() + " " + client.getLastName() +
+                '}';
     }
 }

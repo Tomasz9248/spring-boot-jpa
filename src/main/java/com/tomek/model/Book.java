@@ -27,6 +27,22 @@ public class Book implements Serializable {
         this.author = author;
     }
 
+    /*entity life cycle annotations added as methods in class allow to perform specified action in specified time
+    Possible annotations are:
+    @PrePersist, @PreUpdate, @PreRemove
+    @PostLoad, @PostPersist, @PostUpdate, @PostRemove
+    Those annotations must be void, cant take any argugments and cant be declared as static
+     */
+    @PrePersist // will perform after form is send
+    public void prePersist() {
+        System.out.println("Saving object: " + this);
+    }
+
+    @PostPersist // will perform when object is saved
+    public void postPersist() {
+        System.out.println("Saved object: " + this);
+    }
+
     public Long getId() {
         return id;
     }

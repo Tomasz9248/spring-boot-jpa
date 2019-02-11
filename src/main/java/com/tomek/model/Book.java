@@ -1,25 +1,21 @@
 package com.tomek.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity // mark class as entity that can will be used to create table in database
+@Entity
+@Table(name = "books") // table created in db will be named 'books'
 public class Book implements Serializable {
     private static final long serialVersionUID = 1L;
-
-    @Id // mark the primary-key field=column
-    @GeneratedValue // auto incrementation
-    // every field will be considered as column in db
-
-    // use object type not primitive. Primitive has default value "0"
-    // that doesnt indicate whether its correct value or not.
-    // Object type default value is "null" which is clear
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "book_id") // column based on id will be named 'book_id'
     private Long id;
+    @Column(nullable = false, length = 13, unique = true) // other (optional) options to setup for every column
     private String isbn;
+    @Column(nullable = false)
     private String title;
-    //@Transient means that field is excluded from mapping
+    @Column(nullable = false)
     private String author;
 
     public Book() {
@@ -31,9 +27,6 @@ public class Book implements Serializable {
         this.author = author;
     }
 
-    //Annotations might be placed over getter as well
-    //@Id
-    //@GeneratedValue
     public Long getId() {
         return id;
     }
@@ -58,7 +51,6 @@ public class Book implements Serializable {
         this.title = title;
     }
 
-    //@Transient
     public String getAuthor() {
         return author;
     }

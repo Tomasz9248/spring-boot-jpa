@@ -2,12 +2,7 @@ package com.tomek.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "user_details")
@@ -23,6 +18,8 @@ public class UserDetails implements Serializable {
     @Column(name = "lastname")
     private String lastName;
     private String address;
+    @OneToOne(mappedBy = "details") // use class field name from User to map data
+    private User user;
 
     UserDetails() {
     }
@@ -64,6 +61,14 @@ public class UserDetails implements Serializable {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

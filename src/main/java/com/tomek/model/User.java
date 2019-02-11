@@ -2,13 +2,7 @@ package com.tomek.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /* User class consist basic data about user
 User_details class extends data about user
@@ -30,10 +24,10 @@ public class User implements Serializable {
     private String password;
     @Column(nullable = false, unique = true)
     private String email;
-    // type of relationship is 1:1 one User can has only 1 User_Details
     @OneToOne
-    // field type related table
-    // foreign key will be details_id_user_details
+    // to make relationship two way create column with foreign key
+    // class that contains "@JoinColumn" is an owner of relationship
+    @JoinColumn(name = "id_details")
     private UserDetails details;
 
     User() {

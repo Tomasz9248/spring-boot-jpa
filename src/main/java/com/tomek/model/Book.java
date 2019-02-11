@@ -12,12 +12,18 @@ public class Book implements Serializable {
     @Id // mark the primary-key field=column
     @GeneratedValue // auto incrementation
     // every field will be considered as column in db
+
+    // use object type not primitive. Primitive has default value "0"
+    // that doesnt indicate whether its correct value or not.
+    // Object type default value is "null" which is clear
     private Long id;
     private String isbn;
     private String title;
+    //@Transient means that field is excluded from mapping
     private String author;
 
-    public Book() {}
+    public Book() {
+    }
 
     public Book(String isbn, String title, String author) {
         this.isbn = isbn;
@@ -25,6 +31,9 @@ public class Book implements Serializable {
         this.author = author;
     }
 
+    //Annotations might be placed over getter as well
+    //@Id
+    //@GeneratedValue
     public Long getId() {
         return id;
     }
@@ -49,6 +58,7 @@ public class Book implements Serializable {
         this.title = title;
     }
 
+    //@Transient
     public String getAuthor() {
         return author;
     }

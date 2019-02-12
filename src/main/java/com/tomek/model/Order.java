@@ -1,10 +1,14 @@
 package com.tomek.model;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.*;
 
-// relationship is two way so appropriate annotation must be added
-// client_order is owner of relationship cause has table that contains client table data
+/*
+Order still has n:1 relationship with client from previous example
+Now add ManyToMany one way relationship
+client_order table has access to data stored in table products
+ */
 @Entity
 @Table(name = "client_order")
 public class Order implements Serializable {
@@ -18,10 +22,23 @@ public class Order implements Serializable {
     private String product;
     @Column(name = "details", length = 512)
     private String orderDetails;
+    @ManyToMany // n:m annotation
+    // list/set/map that stores objects of type that we want to get access to
+    private List<Product> products;
     @ManyToOne
-    @JoinColumn(name = "client_id") // name of the column that stores foreign key to access client table
+    @JoinColumn(name = "client_id")
     private Client client;
 
+    /*
+    Its possible to specify properties of table that stores n:m relationship
+
+        @ManyToMany
+    @JoinTable(name = "order_products",
+       joinColumns = {@JoinColumn(name="order_id", referencedColumnName="id_order")},
+       inverseJoinColumns = {@JoinColumn(name="product_id", referencedColumnName="id_product")}
+    )
+
+     */
     Order() {
     }
 

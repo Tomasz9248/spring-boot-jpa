@@ -13,6 +13,8 @@ public abstract class GenericDao<T, K> {
     private EntityManager entityManager;
     private Class<T> type; // during execution defines what type of entity is under operation
 
+    // Annotation manually ensures java compiler that result of this compilation will be safe
+    // otherwise cause of lack of information compiler might have treated it like an error
     @SuppressWarnings("unchecked")
     GenericDao() {
         type = (Class<T>) ((ParameterizedType) this.getClass()

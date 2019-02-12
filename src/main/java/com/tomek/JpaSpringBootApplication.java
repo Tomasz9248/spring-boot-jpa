@@ -15,27 +15,16 @@ public class JpaSpringBootApplication {
     public static void main(String[] args) throws InterruptedException {
         ConfigurableApplicationContext ctx = SpringApplication.run(JpaSpringBootApplication.class, args);
 
-        Client client = new Client("Sherlock", "Holmes", "221b Baker Street, London");
-        ClientDao clientDao = ctx.getBean(ClientDao.class);
-        clientDao.save(client);
-        System.out.println(client);
-
-        Order order = new Order("ASUS Vivobook", "SSD 512 GB, home delivery");
-        order.setClient(client);
-        OrderDao orderDao = ctx.getBean(OrderDao.class);
-        orderDao.save(order);
-
-        Order getOrder = orderDao.get(1L);
-        System.out.println(getOrder);
-
-        client.setOrders(Arrays.asList(order));
-        clientDao.update(client);
-        /*Relationship is two way
-        its possible to access client via order
-        and check orders by client
-        */
-        System.out.println(client.getOrders());
-        System.out.println(order.getClient());
+        /*
+        ManyToMany is always presented as two way relationship in database model
+        It can be created as one way only in objected model
+        This example is extension of last one
+        client and order 1:n and n:1 relationship
+        ManyToMany relationship is added between order and product
+        Database generates 3 basic tables with clients, orders, products
+        Since we have n:m relationship generates also order_products table
+        order_products table stores only key that are references to both tables
+         */
 
         ctx.close();
     }

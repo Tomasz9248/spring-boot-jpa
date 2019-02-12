@@ -11,10 +11,8 @@ public abstract class GenericDao<T, K> {
 
     @PersistenceContext
     private EntityManager entityManager;
-    private Class<T> type; // during execution defines what type of entity is under operation
+    private Class<T> type;
 
-    // Annotation manually ensures java compiler that result of this compilation will be safe
-    // otherwise cause of lack of information compiler might have treated it like an error
     @SuppressWarnings("unchecked")
     GenericDao() {
         type = (Class<T>) ((ParameterizedType) this.getClass()
@@ -36,7 +34,7 @@ public abstract class GenericDao<T, K> {
     }
 
     public void remove (T entity) {
-        T toRemove = entityManager.merge(entity); // remove() methods works on managed objects. merge() makes it managed
+        T toRemove = entityManager.merge(entity);
         entityManager.remove(toRemove);
     }
 }

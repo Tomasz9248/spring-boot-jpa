@@ -49,6 +49,14 @@ public class JpaSpringBootApplication {
         Client getClient = clientDao.get(client.getId());
         System.out.println("\n"+getClient);
 
+        /* Client has assigned 1 order but Hibernate doubles it
+           Automatic query is similar to SELECT * from client_order JOIN order_products ON id_order=order_id
+           and we get also order data twice in database.
+           To avoid that add @Fetch(FetchMode.SELECT) in Order class
+           !!! In real life its important to think whether its necessary to use eager loading that can significantly slow down application
+           Common solution is to use pagination - load fe. 20 records at once. This is used by fe allegro when searching items.
+         */
+
         ctx.close();
     }
 }

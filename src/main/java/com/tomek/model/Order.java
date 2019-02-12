@@ -19,6 +19,7 @@ public class Order implements Serializable {
     @Column(name = "details", length = 512)
     private String orderDetails;
     @ManyToMany(fetch = FetchType.EAGER) // select loading strategy
+    @Fetch(FetchMode.SELECT) // make Hibernate to use more than 1 query to not double outcome 
     private List<Product> products;
     @ManyToOne
     @JoinColumn(name = "client_id")

@@ -9,9 +9,13 @@ import java.lang.reflect.ParameterizedType;
 @Transactional
 public abstract class GenericDao<T, K> {
 
-    @PersistenceContext
     private EntityManager entityManager;
     private Class<T> type;
+
+    @PersistenceContext
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @SuppressWarnings("unchecked")
     GenericDao() {
@@ -27,14 +31,5 @@ public abstract class GenericDao<T, K> {
     public T get(K key) {
         T find = entityManager.find(type, key);
         return find;
-    }
-
-    public void update (T entity) {
-        entityManager.merge(entity);
-    }
-
-    public void remove (T entity) {
-        T toRemove = entityManager.merge(entity);
-        entityManager.remove(toRemove);
     }
 }

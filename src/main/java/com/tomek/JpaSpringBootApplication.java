@@ -15,6 +15,9 @@ public class JpaSpringBootApplication {
         ConfigurableApplicationContext ctx = SpringApplication.run(JpaSpringBootApplication.class, args);
 
         // dynamic queries are queries created when app is running fe based on data send by user via form
+        // JPQL is similar to SQL. Basic difference is that JPQL refers to objected model
+        // in queries refers to entity fields not columns in datatable so they are case sensitive
+        // every field is call out on alias
         List<Product> products = new ArrayList<>();
         products.add(new Product("Telewizor", "Samsung", 4500.0));
         products.add(new Product("Opiekacz", "Opiex", 120.0));

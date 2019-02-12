@@ -14,7 +14,6 @@ import java.util.Arrays;
 public class JpaSpringBootApplication {
     public static void main(String[] args) throws InterruptedException {
         ConfigurableApplicationContext ctx = SpringApplication.run(JpaSpringBootApplication.class, args);
-
         /*
         ManyToMany is always presented as two way relationship in database model
         It can be created as one way only in objected model
@@ -25,7 +24,6 @@ public class JpaSpringBootApplication {
         Since we have n:m relationship generates also order_products table
         order_products table stores only key that are references to both tables
          */
-
         ctx.close();
     }
 }

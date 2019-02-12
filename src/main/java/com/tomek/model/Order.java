@@ -18,8 +18,6 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_order")
     private Long id;
-    @Column(nullable = false)
-    private String product;
     @Column(name = "details", length = 512)
     private String orderDetails;
     @ManyToMany // n:m annotation
@@ -28,7 +26,6 @@ public class Order implements Serializable {
     @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
-
     /*
     Its possible to specify properties of table that stores n:m relationship
 
@@ -37,13 +34,12 @@ public class Order implements Serializable {
        joinColumns = {@JoinColumn(name="order_id", referencedColumnName="id_order")},
        inverseJoinColumns = {@JoinColumn(name="product_id", referencedColumnName="id_product")}
     )
-
      */
+
     Order() {
     }
 
-    public Order(String product, String orderDetails) {
-        this.product = product;
+    public Order(String orderDetails) {
         this.orderDetails = orderDetails;
     }
 
@@ -55,20 +51,20 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public String getProduct() {
-        return product;
-    }
-
-    public void setProduct(String product) {
-        this.product = product;
-    }
-
     public String getOrderDetails() {
         return orderDetails;
     }
 
     public void setOrderDetails(String orderDetails) {
         this.orderDetails = orderDetails;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     public Client getClient() {
@@ -83,9 +79,9 @@ public class Order implements Serializable {
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", product='" + product + '\'' +
-                ", orderDetails='" + orderDetails + '\'' +
+                ", products=" + products +
                 ", client=" + client.getFirstName() + " " + client.getLastName() +
+                ", orderDetails='" + orderDetails + '\'' +
                 '}';
     }
 }

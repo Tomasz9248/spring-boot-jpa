@@ -4,10 +4,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-/*
- in this example relationship is two way
- to allow product to have access to data from order add @ManyToMany annotation
-  */
 @Entity
 @Table(name = "products")
 public class Product implements Serializable {
@@ -23,10 +19,8 @@ public class Product implements Serializable {
     private Double price;
     @Column(name = "details")
     private String details;
-    // annotation is mapped by reference name that stores products in Order class
     @ManyToMany (mappedBy = "products")
     private List<Order> orders;
-
 
     public Product() {
     }
@@ -84,7 +78,6 @@ public class Product implements Serializable {
                 ", name='" + name + '\'' +
                 ", price=" + price +
                 ", details='" + details + '\'' +
-                ", orders=" + orders.size() +
                 '}';
     }
 }

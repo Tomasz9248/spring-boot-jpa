@@ -9,8 +9,6 @@ import javax.transaction.Transactional;
 @Repository
 @Transactional
 public class OrderDao extends GenericDao<Order, Long> {
-   // create specific method that allows to add products to order
-    // as an argument it takes orders's id and products that are expect to be added to order with provided id
     public void addProductsToOrder(Long orderId, Product... products) {
         Order order = get(orderId);
         if(order != null) {

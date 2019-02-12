@@ -8,5 +8,4 @@ import javax.transaction.Transactional;
 @Repository
 @Transactional
 public class ClientDao extends GenericDao<Client, Long> {
-
 }

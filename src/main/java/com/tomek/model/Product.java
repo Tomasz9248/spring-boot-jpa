@@ -28,7 +28,6 @@ public class Product implements Serializable {
     @Column(name = "details")
     private String details;
     @ManyToMany(mappedBy = "products")
-    // its a good practice to initialize collection
     private List<Order> orders = new ArrayList<>();
 
     Product() {}

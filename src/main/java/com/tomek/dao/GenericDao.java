@@ -32,4 +32,9 @@ public abstract class GenericDao<T, K> {
         T find = entityManager.find(type, key);
         return find;
     }
+
+    public void remove(T enityty) {
+        T managedEntity = entityManager.merge(enityty);
+        entityManager.remove(managedEntity);
+    }
 }

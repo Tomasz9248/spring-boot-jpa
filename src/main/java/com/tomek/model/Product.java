@@ -1,12 +1,17 @@
 package com.tomek.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+/*
+to create static query use @NamedQuery in entity that they operate on
+name should be meaningful and look like EntityName.whatThisQueryExactlyDo
+ */
+@NamedQueries({
+        @NamedQuery(name = "Product.getAll", query = "SELECT p FROM Product p"),
+        @NamedQuery(name = "Product.deleteAll", query = "DELETE FROM Product p")
+})
 public class Product implements Serializable {
 
     @Id

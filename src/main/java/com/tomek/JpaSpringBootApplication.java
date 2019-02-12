@@ -13,11 +13,12 @@ import java.util.List;
 public class JpaSpringBootApplication {
     public static void main(String[] args) throws InterruptedException {
         ConfigurableApplicationContext ctx = SpringApplication.run(JpaSpringBootApplication.class, args);
-
-        // dynamic queries are queries created when app is running fe based on data send by user via form
-        // JPQL is similar to SQL. Basic difference is that JPQL refers to objected model
-        // in queries refers to entity fields not columns in datatable so they are case sensitive
-        // every field is call out on alias
+        /*
+        With static queries output doesnt change.
+        Dynamic queries are translated from JPQL to SQL every time they run while static are translated only once so it could be positive for efficency
+        Dynamic queries are accessed only in class where they are defined. Static queries are defined in entity class and can be accessed by multiply Dao
+        Stored in one place static queries are easier to read
+         */
         List<Product> products = new ArrayList<>();
         products.add(new Product("Telewizor", "Samsung", 4500.0));
         products.add(new Product("Opiekacz", "Opiex", 120.0));

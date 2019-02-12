@@ -30,21 +30,16 @@ public class ProductDao {
     }
 
     public List<Product> getAll() {
-        // in JPQL its necessary to use aliases
-        final String getAll = "SELECT p FROM Product p";
-        // TypedQuery interface extends Query interface. Its generic so doesnt need typecasting
-        // queries are created by calling on EntityManager
-        TypedQuery<Product> getAllQuery = entityManager.createQuery(getAll, Product.class);
-        // if expect list of objects as result use getResultList() on query - in case of no date returns empty list. null-safe
-        // if expect only 1 objec use getSingleObject() - exception if returned more than 1 record
+        // createNamedQuery with @NamedQuery name from Product entity
+        // 2nd parameter is a class that's objects TypedQuery returns
+        TypedQuery<Product> getAllQuery = entityManager.createNamedQuery("Product.getAll", Product.class);
         List<Product> resultList = getAllQuery.getResultList();
         return resultList;
     }
 
     public void deleteAll() {
-        final String deleteAll = "DELETE FROM Product p";
-        Query deleteAllQuery = entityManager.createQuery(deleteAll);
-        //executeUpdate() returns number of record that were updated/removed
+        // we use createNamedQuery to create query and pass @NamedQuery name from Product entity as a parameter
+        Query deleteAllQuery = entityManager.createNamedQuery("Product.deleteAll");
         deleteAllQuery.executeUpdate();
     }
 

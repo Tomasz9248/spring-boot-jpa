@@ -1,7 +1,9 @@
 package com.tomek;
 
 import com.tomek.model.Car;
+import com.tomek.model.Employee;
 import com.tomek.repository.CarRepository;
+import com.tomek.repository.EmployeeRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -16,57 +18,27 @@ public class JpaSpringBootApplication {
     public static void main(String[] args) throws InterruptedException {
         ConfigurableApplicationContext ctx = SpringApplication.run(JpaSpringBootApplication.class, args);
 
-        List<Car> cars = new ArrayList<>();
-        cars.add(new Car("A4", "Audi", 49000.0));
-        cars.add(new Car("A5", "Audi", 67000.0));
-        cars.add(new Car("Auris", "Toyota", 35000.0));
-        cars.add(new Car("Insignia", "Opel", 29500.0));
-        cars.add(new Car("A8", "Audi", 28000.0));
-        cars.add(new Car("Corolla", "Toyota", 31000.0));
-        cars.add(new Car("Vectra", "Opel", 29500.0));
-        cars.add(new Car("Astra", "Opel", 29500.0));
+        /*
+        if method has multiply conditions it becomes less cleaner fe:
+         findByLastNameAndSalaryGreaterThanEqualOrderBySalaryAsc
+        to avoid this use @Query annotation is repository interface (check EmployeeRepository)
+         */
 
-        CarRepository carRepo = ctx.getBean(CarRepository.class);
-        cars.forEach(carRepo::save);
+        EmployeeRepository employeeRepo = ctx.getBean(EmployeeRepository.class);
 
-        //Find all
-        System.out.println("All Toyota cars:");
-        List<Car> allToyotas = carRepo.findByBrand("Toyota");
-        allToyotas.forEach(System.out::println);
+        Stream.of(new Employee("Jan", "Kowalski", 3000.0),
+                new Employee("Wojciech", "Kowalski", 4000.0),
+                new Employee("Ania", "Zawada", 3200.0),
+                new Employee("Patryk", "Kostrzewski", 4500.0))
+                .forEach(employeeRepo::save);
 
-        //Find first
-        Car opel = carRepo.findFirstByBrand("Opel");
-        System.out.println(opel);
-
-        //And / Or
-        System.out.println("Audi for 49000: ");
-        carRepo.findAllByBrandAndPrice("Audi", 49000).forEach(System.out::println);
-        System.out.println("Toyota or Opel:");
-        carRepo.findAllByBrandOrBrand("Toyota", "Opel").forEach(System.out::println);
-
-        //like, notlike, startingwith, endingwith, containing
-        System.out.println("Cars with brand starting with A");
-        carRepo.findAllByBrandLike("A%").forEach(System.out::println);
-        System.out.println("Cars with name ending with 'tra'");
-        carRepo.findAllByNameEndingWith("tra").forEach(System.out::println);
-
-        //lessThan, between
-        System.out.println("Cars cheaper than 30000");
-        carRepo.findAllByPriceLessThan(30000).forEach(System.out::println);
-        System.out.println("Cars with price between 30-40k");
-        carRepo.findAllByPriceBetween(30000, 40000).forEach(System.out::println);
-
-        //ordering
-        System.out.println("All Audi cars, price ascending");
-        carRepo.findAllByBrandOrderByPriceAsc("Audi")
+        System.out.println("Employees with last name Kowalski and salary >= 2000");
+        employeeRepo.findByLastNameAndSalary("Kowalski", 2000)
                 .forEach(System.out::println);
 
-        //notNull, in
-        System.out.println("Cars with brand");
-        carRepo.findAllByBrandNotNull().forEach(System.out::println);
-        System.out.println("Car name in {Insignia, Corolla}");
-        List<String> carNames = Stream.of("Insignia", "Corolla").collect(Collectors.toList());
-        carRepo.findAllByNameIn(carNames).forEach(System.out::println);
+        System.out.println("Employee names with salary >= 4000");
+        employeeRepo.namesForSalaryAsc(4000)
+                .forEach(System.out::println);
 
         ctx.close();
     }

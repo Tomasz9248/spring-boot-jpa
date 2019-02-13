@@ -30,15 +30,27 @@ public class ProductDao {
     }
 
     public List<Product> getAll() {
-        // createNamedQuery with @NamedQuery name from Product entity
-        // 2nd parameter is a class that's objects TypedQuery returns
         TypedQuery<Product> getAllQuery = entityManager.createNamedQuery("Product.getAll", Product.class);
         List<Product> resultList = getAllQuery.getResultList();
         return resultList;
     }
 
+    public List<Product> findByName(String name) {
+        TypedQuery<Product> getByNameQuery = entityManager.createNamedQuery("Product.findByName", Product.class);
+        // set parameter named name (':name' in query) to value passed in argument as name
+        getByNameQuery.setParameter("name", name);
+        List<Product> resultList = getByNameQuery.getResultList();
+        return resultList;
+    }
+
+    public void deleteByProducer(String producer) {
+        Query deleteByProducer = entityManager.createQuery("DELETE FROM Product p WHERE p.producer = :producer");
+        // set producer param value to String producer passed as argument
+        deleteByProducer.setParameter("producer", producer);
+        deleteByProducer.executeUpdate();
+    }
+
     public void deleteAll() {
-        // we use createNamedQuery to create query and pass @NamedQuery name from Product entity as a parameter
         Query deleteAllQuery = entityManager.createNamedQuery("Product.deleteAll");
         deleteAllQuery.executeUpdate();
     }

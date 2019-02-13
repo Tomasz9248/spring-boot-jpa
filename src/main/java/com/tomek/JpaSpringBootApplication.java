@@ -13,12 +13,9 @@ import java.util.List;
 public class JpaSpringBootApplication {
     public static void main(String[] args) throws InterruptedException {
         ConfigurableApplicationContext ctx = SpringApplication.run(JpaSpringBootApplication.class, args);
-        /*
-        With static queries output doesnt change.
-        Dynamic queries are translated from JPQL to SQL every time they run while static are translated only once so it could be positive for efficency
-        Dynamic queries are accessed only in class where they are defined. Static queries are defined in entity class and can be accessed by multiply Dao
-        Stored in one place static queries are easier to read
-         */
+
+        //parameters are passed into queries in similar way like in Spring JDBC with double dot
+
         List<Product> products = new ArrayList<>();
         products.add(new Product("Telewizor", "Samsung", 4500.0));
         products.add(new Product("Opiekacz", "Opiex", 120.0));
@@ -29,22 +26,12 @@ public class JpaSpringBootApplication {
         ProductDao productDao = ctx.getBean(ProductDao.class);
         products.forEach(productDao::save);
 
-        System.out.println("All products:");
-        List<Product> allProducts = productDao.getAll();
-        allProducts.forEach(System.out::println);
+        productDao.deleteByProducer("Samsung");
+        System.out.println("Products without Samsung:");
+        productDao.getAll().forEach(System.out::println);
 
-        System.out.println("Products more expensive than 3000");
-        List<Product> expensiveProducts = productDao.customGet("SELECT p FROM Product p WHERE p.price > 3000");
-        expensiveProducts.forEach(System.out::println);
-
-
-        System.out.println("All products ordered by price");
-        List<Product> productsByPrice = productDao.customGet("SELECT p FROM Product p ORDER BY p.price ASC");
-        productsByPrice.forEach(System.out::println);
-
-        System.out.println("Expensive Samsung Products:");
-        List<Product> expensiveSamsungProcucts = productDao.customGet("SELECT p FROM Product p WHERE p.price > 4000 AND p.producer = 'Samsung'");
-        expensiveSamsungProcucts.forEach(System.out::println);
+        List<Product> productByName = productDao.findByName("Opiekacz");
+        System.out.println(productByName);
 
         ctx.close();
     }

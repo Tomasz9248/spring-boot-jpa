@@ -10,6 +10,8 @@ name should be meaningful and look like EntityName.whatThisQueryExactlyDo
  */
 @NamedQueries({
         @NamedQuery(name = "Product.getAll", query = "SELECT p FROM Product p"),
+        // parameter to set is wrote down with double dot like in Spring JDBC. Access should  refer to "name" parameter (no dd)
+        @NamedQuery(name = "Product.findByName", query = "SELECT p FROM Product p WHERE p.name = :name"),
         @NamedQuery(name = "Product.deleteAll", query = "DELETE FROM Product p")
 })
 public class Product implements Serializable {
